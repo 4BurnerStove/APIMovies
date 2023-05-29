@@ -5,7 +5,7 @@ class movieNotesController{
     const { titleMovie, description, grade, moviesTags } = req.body 
     const { user_id } = req.params
 
-    const { movies_notes_id } = await knex("moviesNotes").insert({
+    const [moviesNotes_id]  = await knex("moviesNotes").insert({
       titleMovie,
       description,
       grade,
@@ -14,7 +14,7 @@ class movieNotesController{
 
     const tagsInsert = moviesTags.map(name => {
       return {
-        movies_notes_id,
+        moviesNotes_id,
         name,
         user_id
       }
@@ -23,6 +23,27 @@ class movieNotesController{
     await knex('moviesTags').insert(tagsInsert)
 
     res.json()
+  }
+
+  async show(req,res){
+    const { id } = req.params
+
+    const note = await knex('moviesNotes').where({ id }).first()
+    const tags = await knex('moviesTags').where({moviesNotes_id: id}).orderBy('name')
+    
+    return res.json({
+      ...note,
+      tags
+    })
+  }
+
+  async delete(req,res){
+    const {id} = req.params
+
+    await knex('moviesNotes').where({ id }).delete()
+    await knex('moviesTags').where({id}).delete()
+
+    return res.json()
   }
 }
 
