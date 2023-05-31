@@ -16,7 +16,7 @@
     "express-async-errors": "^3.1.1",
     "knex": "^2.4.2",
     "path": "^0.12.7",
-    "sqlite": "^4.2.0",
+    "sqlite": "^4.2.1",
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
