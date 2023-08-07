@@ -4,11 +4,16 @@ const express = require('express')
 const database = require("./database/sqlite")
 const AppError = require('./utils/AppError')
 const routes = require('./Routes/index')
+const cors = require('cors')
 
 const app = express()
 
 app.use(express.json())
+
+app.use(cors())
+
 app.use(routes)
+
 database()
 app.use((error, req, res, next) => {
   if(error instanceof AppError){
