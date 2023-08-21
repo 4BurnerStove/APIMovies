@@ -5,6 +5,7 @@ const database = require("./database/sqlite")
 const AppError = require('./utils/AppError')
 const routes = require('./Routes/index')
 const cors = require('cors')
+const uploadConfig = require('./configs/upload')
 
 const app = express()
 
@@ -13,6 +14,8 @@ app.use(express.json())
 app.use(cors())
 
 app.use(routes)
+
+app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER))
 
 database()
 app.use((error, req, res, next) => {
