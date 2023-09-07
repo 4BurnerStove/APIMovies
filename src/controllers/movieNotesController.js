@@ -49,12 +49,12 @@ class movieNotesController{
     const { titleMovie, moviesTags } = req.query
     const user_id = req.user.id
 
-    let notes
+    let note
 
     if(moviesTags) {
       const filterTags = moviesTags.split(',').map(tag => tag.trim())
 
-      notes = await knex('moviesTags')
+      note = await knex('moviesTags')
       .select([
         "moviesNotes.id",
         "moviesNotes.titleMovie",
@@ -66,15 +66,20 @@ class movieNotesController{
       .innerJoin("moviesNotes", "moviesNotes.id", "moviesTags.moviesNotes_id")
       .orderBy('moviesNotes.titleMovie')
 
-
     } else {
-    notes = await knex('moviesNotes')
+    note = await knex('moviesNotes')
     .where({ user_id })
     .whereLike('titleMovie', `%${titleMovie}%`)
     .orderBy('titleMovie')
    }
 
-  res.json(notes)
+   if(!titleMovie || !moviesTags){
+     note = await knex('moviesNotes')
+     .where({ user_id })
+     .orderBy('titleMovie')
+   }
+
+  res.json(note)
   }
 
 }
