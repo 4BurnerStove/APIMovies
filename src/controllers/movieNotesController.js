@@ -26,7 +26,7 @@ class movieNotesController{
   }
 
   async show(req,res){
-    const id = req.user.id
+    const { id } = req.params
 
     const note = await knex('moviesNotes').where({ id }).first()
     const tags = await knex('moviesTags').where({moviesNotes_id: id}).orderBy('name')
