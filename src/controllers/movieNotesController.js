@@ -38,7 +38,7 @@ class movieNotesController{
   }
 
   async delete(req,res){
-    const id = req.user.id
+    const { id } = req.params
 
     await knex('moviesNotes').where({ id }).delete()
 
