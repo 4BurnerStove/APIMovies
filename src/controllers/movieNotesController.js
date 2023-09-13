@@ -46,39 +46,23 @@ class movieNotesController{
   }
 
   async index(req, res){
-    const { titleMovie, moviesTags } = req.query
+    const { titleMovie } = req.query
     const user_id = req.user.id
 
     let note
+    
+    if(!titleMovie){
+        note = await knex('moviesNotes')
+        .where({ user_id })
+        .orderBy('titleMovie')
+     }
 
-    if(moviesTags) {
-      const filterTags = moviesTags.split(',').map(tag => tag.trim())
-
-      note = await knex('moviesTags')
-      .select([
-        "moviesNotes.id",
-        "moviesNotes.titleMovie",
-        "moviesNotes.user_id"
-      ])
-      .where("moviesNotes.user_id", user_id)
-      .whereLike('moviesNotes.titleMovie', `%${titleMovie}%` )
-      .whereIn("name", filterTags)
-      .innerJoin("moviesNotes", "moviesNotes.id", "moviesTags.moviesNotes_id")
-      .orderBy('moviesNotes.titleMovie')
-
-
-    } else {
-    note = await knex('moviesNotes')
-    .where({ user_id })
-    .whereLike('titleMovie', `%${titleMovie}%`)
-    .orderBy('titleMovie')
-   }
-
-   if(!titleMovie || !moviesTags){
-     note = await knex('moviesNotes')
-     .where({ user_id })
-     .orderBy('titleMovie')
-   }
+     if(titleMovie) {
+      note = await knex('moviesNotes')
+      .where({ user_id })
+      .whereLike('titleMovie', `%${titleMovie}%`)
+      .orderBy('titleMovie')
+      } 
 
     const userTags = await knex('moviesTags').where({user_id})
     const notesWithTags = note.map(note => {
