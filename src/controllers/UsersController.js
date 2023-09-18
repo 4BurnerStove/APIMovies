@@ -1,8 +1,8 @@
+const sqliteConnection = require('../database/sqlite')
 const AppError = require('../utils/AppError')
 const { hash, compare }= require('bcryptjs')
 
-const sqliteConnection = require('../database/sqlite')
-const UserRepository = require ('../repositories/UserRepository')
+const UserRepository = require ('../repositories/UserRepository.js')
 
 class UsersController {
   async create(req, res) {
@@ -10,7 +10,6 @@ class UsersController {
 
     const userRepository = new UserRepository()
 
-    const database = await sqliteConnection()
     const checkUserEmailExists = await userRepository.findByEmail(email)
 
     if(checkUserEmailExists){

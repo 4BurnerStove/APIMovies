@@ -3,7 +3,7 @@ const sqliteConnection = require('../database/sqlite')
 class UserRepository {
   async findByEmail(email){
     const database = await sqliteConnection()
-    const user = await database.get("SELEC * FROM users WHERE email = ?", [email])
+    const user = await database.get("SELECT * FROM users WHERE email = ?", [email])
 
     return user
   }
@@ -12,7 +12,7 @@ class UserRepository {
     const database = await sqliteConnection()
     
     const userId = await database.run("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [name, email, password])
-    
+
     return {id: userId}
   }
 
