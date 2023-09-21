@@ -3,8 +3,8 @@ class UserCreateService{
     this.userRepository = userRepository 
 
   }
-  async execute({name, email, password}){
 
+  async execute({name, email, password}){
     const checkUserEmailExists = await this.userRepository.findByEmail(email)
 
     if(checkUserEmailExists){
