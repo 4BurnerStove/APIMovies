@@ -1,3 +1,6 @@
+const AppError = require('../utils/AppError')
+const { hash, compare }= require('bcryptjs')
+
 class UserCreateService{
   constructor(userRepository){
     this.userRepository = userRepository 
