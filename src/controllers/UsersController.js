@@ -8,21 +8,6 @@ class UsersController {
   async create(req, res) {
     const { name, email, password } = req.body
 
-    const userRepository = new UserRepository()
-
-    const checkUserEmailExists = await userRepository.findByEmail(email)
-
-    if(checkUserEmailExists){
-      throw new AppError("Este e-mail já está em uso.")
-    }
-
-    if(!name){
-      throw new AppError("Nome é obrigatório!")
-    }
-
-    const hashedPassword = await hash(password, 8)
-
-    await userRepository.create({name, email, password: hashedPassword})
 
     res.status(201).json()
   }
