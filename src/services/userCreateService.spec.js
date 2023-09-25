@@ -13,5 +13,4 @@ it("user should be create", async () => {
   const userCreated = await userCreateService.execute(user)
 
   expect(userCreated).toHaveProperty('id')
-
 })
